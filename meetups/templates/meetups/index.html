@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'meetups/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'meetups/css/all-meetup.css' %}">
+</head>
+<body>
+    <header id="main-header">
+        <nav>
+            <a href="/meetups" id="main-logo">Meetups</a>
+        </nav>
+        <h1>Lots of upcoming Meetups</h1>
+        <p>Find which suits you best!</p>
+    </header>
+    <main>
+        <section>
+            <h2>Upcoming Meetups</h2>
+            <ol>
+                {% for meets in meetups %}
+                <li class="meetup-item">
+                    <article>
+                        <div class="meetup-summary">
+                            <div class="meetup-image">
+                                <img src="" alt="">
+                            </div>
+                            <div class="meetup-details">
+                                <h3>{{meets.title}}</h3>
+                                <address>{{meets.location}}</address>
+                            </div>
+                        </div>
+                        <div class="meetup-actions">
+                            <a href="" class="btn">More Details</a>
+                        </div>
+                    </article>
+                </li>
+                {% endfor %}
+            </ol>
+        </section>
+    </main>
+</body>
+</html>
