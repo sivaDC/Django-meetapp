@@ -1,16 +1,14 @@
+{% extends 'meetups/base/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{meetup_title}}</title>
-    <link rel="stylesheet" href="{% static 'meetups/css/base.css' %}">
+{% block title %}{{meetup_title}} {% endblock %}
+
+{% block header_content %}
     <link rel="stylesheet" href="{% static 'meetups/css/meetup-detail.css' %}">
-</head>
-<body>
-    <main>
+{% endblock %}
+
+{% block heading %}<h1>{{meetup_title}}</h1>{% endblock %}
+{% block body_content %}
+<main>
   <article>
     <img src=" " alt=" " >
     <section id="location" >
@@ -29,5 +27,4 @@
     </section>
   </article>
 </main>
-</body>
-</html>
+{% endblock %}
