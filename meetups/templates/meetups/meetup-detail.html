@@ -9,11 +9,12 @@
 {% block heading %}<h1>{{meetup_title}}</h1>{% endblock %}
 {% block body_content %}
 <main>
+  {% if meetup_found %}
   <article>
-    <img src=" " alt=" " >
+    <img src="{{meetup_img}}" alt=" " >
     <section id="location" >
       <h2> Meetup Location </h2>
-      <address> This meetup takes place in <span> LOCATION </span> (Address) .</address>
+      <address> This meetup takes place in <span> {{meetup_city}} </span> ({{meetup_addr}}) .</address>
     </section>
     <section id="details">
         <h2>What's this Meetup about?</h2>
@@ -26,5 +27,8 @@
         <h2>JOIN US!</h2>
     </section>
   </article>
+  {% else %}
+<p>No meetup found</p>
+  {% endif %}
 </main>
 {% endblock %}
