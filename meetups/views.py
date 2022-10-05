@@ -1,8 +1,11 @@
 from ast import Try
-from django.shortcuts import render
+from atexit import register
+import re
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from .models import Meetup
+from .forms import RegistrationForm
 
 # Create your views here.
 def Index(request):
@@ -12,19 +15,28 @@ def Index(request):
         })
 
 
-def meetup_details (request,meetup_slug) :
+def meetup_details(request,meetup_slug):
     try:
         selected_meetup = Meetup.objects.get(slug=meetup_slug)
-        return render ( request , 'meetups/meetup-detail.html' , {
-            'meetup_found' : True ,
-            'meetup_title' : selected_meetup.title,
-            'meetup_description' : selected_meetup.description,
-            'meetup_img': selected_meetup.image.url,
-            'meetup_city': selected_meetup.location.name,
-            'meetup_addr': selected_meetup.location.address,
+        if request.method == 'GET':
+            registration_form = RegistrationForm()
+        else:
+            registration_form = RegistrationForm(request.POST)
+            if registration_form.is_valid():
+                data_val = registration_form.save()
+                selected_meetup.participants.add(data_val)
+                return redirect('registered_success')
 
+        return render (request , 'meetups/meetup-detail.html' , {
+            'meetup_found' : True ,
+            'meetups' : selected_meetup,
+            'form' : registration_form
          })
     except Exception as exe:
-        return render ( request , 'meetups/meetup-detail.html' , {
+        print(exe)
+        return render (request , 'meetups/meetup-detail.html' , {
             'meetup_found' : False ,
          })
+
+def meetup_added(request):
+    return render(request,'meetups/registration-success.html')

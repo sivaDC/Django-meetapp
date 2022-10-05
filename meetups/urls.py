@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
 path("meetups/",views.Index),
-path("meetups/<slug:meetup_slug>/",views.meetup_details,name='meetup_detail')
+path("meetups/success/",views.meetup_added,name='registered_success'),
+path("meetups/<slug:meetup_slug>/",views.meetup_details,name='meetup_detail'),
 ]

@@ -6,25 +6,34 @@
     <link rel="stylesheet" href="{% static 'meetups/css/meetup-detail.css' %}">
 {% endblock %}
 
-{% block heading %}<h1>{{meetup_title}}</h1>{% endblock %}
+{% block heading %}<h1>{{meetups.title}}</h1>{% endblock %}
 {% block body_content %}
 <main>
   {% if meetup_found %}
   <article>
-    <img src="{{meetup_img}}" alt=" " >
+    <img id="main-image" src="{{meetups.image.url}}" alt=" " >
     <section id="location" >
       <h2> Meetup Location </h2>
-      <address> This meetup takes place in <span> {{meetup_city}} </span> ({{meetup_addr}}) .</address>
+      <address> This meetup takes place in <span> {{meetups.location.name}} </span> ({{meetups.location.address}}) .</address>
     </section>
     <section id="details">
         <h2>What's this Meetup about?</h2>
-        <p>{{meetup_description}}</p>
+        <p>{{meetups.description}}</p>
         <footer>
             <p>Need more details? Please <a href="">Contact the organiser</a></p>
         </footer>
     </section>
     <section id="registration">
         <h2>JOIN US!</h2>
+        <form action="{% url 'meetup_detail' meetups.slug %}" method="POST">
+          {% csrf_token %}
+          <ul>
+            {{form.as_ul}}
+          </ul>
+          <div id="registration-actions">
+            <button>Register</button>
+          </div>
+        </form>
     </section>
   </article>
   {% else %}
