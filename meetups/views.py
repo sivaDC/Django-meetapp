@@ -4,7 +4,7 @@ import re
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from .models import Meetup
+from .models import Meetup, Participant
 from .forms import RegistrationForm
 
 # Create your views here.
@@ -23,9 +23,10 @@ def meetup_details(request,meetup_slug):
         else:
             registration_form = RegistrationForm(request.POST)
             if registration_form.is_valid():
-                data_val = registration_form.save()
-                selected_meetup.participants.add(data_val)
-                return redirect('registered_success')
+                user_email = registration_form.cleaned_data['email']
+                participant, _ = Participant.objects.get_or_create(email=user_email)
+                selected_meetup.participants.add(participant)
+                return redirect('registered_success',meetup_slug=meetup_slug)
 
         return render (request , 'meetups/meetup-detail.html' , {
             'meetup_found' : True ,
@@ -38,5 +39,8 @@ def meetup_details(request,meetup_slug):
             'meetup_found' : False ,
          })
 
-def meetup_added(request):
-    return render(request,'meetups/registration-success.html')
+def meetup_added(request,meetup_slug):
+    selected_meetup = Meetup.objects.get(slug=meetup_slug)
+    return render(request,'meetups/registration-success.html',{
+            'meetups' : selected_meetup,
+         })
